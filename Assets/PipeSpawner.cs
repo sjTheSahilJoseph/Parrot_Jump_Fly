@@ -1,30 +1,37 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PipeSpawner : MonoBehaviour
 {
-	public GameObject pipe;
-	public float spawn_rate = 1;
-	private float timer = 0;
-	
+    public GameObject pipe;
+    public float spawnRate = 2f;
+    private float timer = 0f;
+    public float heightOffset = 10f;
+
     void Start()
     {
-			spawn_pipe();
+        SpawnPipe();
     }
 
-    // Update is called once per frame
     void Update()
     {
-		if (timer < spawn_rate) {
-			timer += Time.deltaTime;
-		} else {
-			spawn_pipe();
-			timer = 0;
-		}
+        timer += Time.deltaTime;
+        if (timer >= spawnRate)
+        {
+            SpawnPipe();
+            timer = 0f;
+        }
     }
 
-	void spawn_pipe() {
-		Instantiate(pipe, transform.position, transform.rotation);
-	}
+    void SpawnPipe()
+    {
+        float lowestPoint = transform.position.y - heightOffset;
+        float highestPoint = transform.position.y + heightOffset;
+        Vector3 pipePosition = new Vector3(transform.position.x, Random.Range(lowestPoint, highestPoint), 0);
+        
+        Instantiate(pipe, pipePosition, transform.rotation);
+    }
 }
